@@ -17,12 +17,6 @@ class _HomePage extends State<HomePage> {
   late Future<List<Data>> user;
   List<Data> listUser = [];
 
-  // @override
-  // void initState() {
-  //   getUser();
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
