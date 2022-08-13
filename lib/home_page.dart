@@ -27,9 +27,40 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista de Usuarios'),
+        title: const Text('Lista de Usuarios'),
       ),
-      body: listUserApp(),
+      body: FutureBuilder<List<Data>>(
+        future: getUser(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('Erro ao carregar Usuarios'),
+            );
+          }
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    backgroundImage:
+                        NetworkImage(snapshot.data![index].avatar.toString()),
+                  ),
+                  onTap: () => _selectUser(snapshot.data![index]),
+                  title: Text(
+                      '${snapshot.data![index].firstName} ${snapshot.data![index].lastName}'),
+                  subtitle: Text(snapshot.data![index].email.toString()),
+                );
+              },
+            );
+          }
+
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
     );
   }
 
@@ -42,68 +73,13 @@ class _HomePage extends State<HomePage> {
       List<Data> listUser = listJsonComplete.data!.toList();
       return listUser;
     } else {
-      throw Exception('Erro');
+      throw Exception('Erro ao carregar os dados');
     }
   }
 
-  final _teste1 = [
-    Data(
-        id: 1,
-        email: "george.bluth@reqres.in",
-        firstName: "George",
-        lastName: "Bluth",
-        avatar: "https://reqres.in/img/faces/1-image.jpg"),
-    Data(
-        id: 1,
-        email: "anet.weaver@reqres.in",
-        firstName: "Janet",
-        lastName: "Weaver",
-        avatar: "https://reqres.in/img/faces/2-image.jpg")
-  ];
-
-  listUserApp() {
-    return Column(
-      children: _teste1.map((tr) {
-        return Card(
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                color: Colors.blueAccent,
-                width: 2,
-              )),
-              padding: EdgeInsets.all(10),
-              child: Text(tr.firstName.toString()),
-            ),
-            Column(
-              children: [
-                Text('${tr.firstName} ${tr.lastName}'),
-                Text(tr.email.toString())
-              ],
-            ),
-            Container(
-              child: Column(
-                children: [
-                  TextButton(
-                    // onPressed: () {},
-                    onPressed: () => _selectUser(_teste1),
-                    child: Text('+detalhes'),
-                    // Icon(Icons.supervised_user_circle_rounded),
-                  )
-                ],
-              ),
-            )
-          ]),
-        );
-      }).toList(),
-    );
-  }
-
-  void _selectUser(List<Data> users) {
+  void _selectUser(Data snapshot) {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-      return UserInfo(_teste1);
+      return UserInfo(snapshot);
     }));
   }
 }

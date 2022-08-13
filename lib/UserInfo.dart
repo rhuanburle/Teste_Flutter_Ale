@@ -4,46 +4,40 @@ import 'User.dart';
 class UserInfo extends StatelessWidget {
   // const UserInfo({Key? key}) : super(key: key);
   // final Data data;
-  final List<Data> data;
+  final Data user;
 
-  const UserInfo(this.data);
+  const UserInfo(this.user);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Detalhes dos Usuarios'),
-        ),
-        body: Container(
-            child: Column(
-          children: data.map(
-            (e) {
-              return Card(
-                clipBehavior: Clip.antiAlias,
-                child: Column(
-                  children: [
-                    Image.network(e.avatar.toString()),
-                    ListTile(
-                      title: Text('${e.firstName} ${e.lastName}',
-                          textAlign: TextAlign.center),
-                      subtitle: Text(
-                        e.email.toString(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.black.withOpacity(0.6)),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        '${e.firstName} é Legal.',
-                        style: TextStyle(color: Colors.black.withOpacity(0.6)),
-                      ),
-                    ),
-                  ],
+      appBar: AppBar(
+        title: const Text('Detalhes dos Usuarios'),
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            Card(
+              clipBehavior: Clip.antiAlias,
+              child: Column(children: [
+                Image.network(user.avatar.toString()),
+                ListTile(
+                  title: Text('${user.firstName} ${user.lastName}',
+                      textAlign: TextAlign.center),
+                  subtitle: Text(
+                    user.email.toString(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                  ),
                 ),
-              );
-            },
-          ).toList(),
-        )));
+                Padding(padding: EdgeInsets.all(16.0)),
+                Text(
+                    'Nome: ${user.firstName}.\n Sobrenome ${user.lastName} \n Email: ${user.email}')
+              ]),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
