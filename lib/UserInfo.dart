@@ -18,7 +18,10 @@ class UserInfo extends StatelessWidget {
           Card(
             clipBehavior: Clip.antiAlias,
             child: Column(children: [
-              Image.network(user.avatar.toString()),
+              ClipRRect(
+                child: Image.network(user.avatar.toString()),
+                borderRadius: const BorderRadius.all(Radius.circular(30)),
+              ),
               ListTile(
                 title: Text('${user.firstName} ${user.lastName}',
                     textAlign: TextAlign.center),
