@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:teste_flutter/UserInfo.dart';
-import '/User.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:teste_flutter/paginas/UserInfo.dart';
+import '../Domain/User.dart';
 import 'dart:async';
 import 'UserInfo.dart';
 
@@ -45,6 +46,7 @@ class _HomePage extends State<HomePage> {
                   title: Text(
                       '${snapshot.data![index].firstName} ${snapshot.data![index].lastName}'),
                   subtitle: Text(snapshot.data![index].email.toString()),
+                  trailing: const Icon(Icons.more_vert_sharp),
                 );
               },
             );
