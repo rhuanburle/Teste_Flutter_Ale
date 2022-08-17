@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:page_transition/page_transition.dart';
 import 'package:teste_flutter/paginas/UserInfo.dart';
 import '../Domain/User.dart';
 import 'dart:async';
 import 'UserInfo.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class _HomePage extends State<HomePage> {
                     backgroundImage:
                         NetworkImage(snapshot.data![index].avatar.toString()),
                   ),
-                  onTap: () => _selectUser(snapshot.data![index]),
+                  onTap: () => Get.to(UserInfo(snapshot.data![index])),
                   title: Text(
                       '${snapshot.data![index].firstName} ${snapshot.data![index].lastName}'),
                   subtitle: Text(snapshot.data![index].email.toString()),
@@ -51,7 +51,6 @@ class _HomePage extends State<HomePage> {
               },
             );
           }
-
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -71,11 +70,5 @@ class _HomePage extends State<HomePage> {
     } else {
       throw Exception('Erro ao carregar os dados');
     }
-  }
-
-  void _selectUser(Data snapshot) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-      return UserInfo(snapshot);
-    }));
   }
 }
